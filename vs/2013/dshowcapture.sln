@@ -1,7 +1,14 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dshowcapture", "dshowcapture\dshowcapture.vcxproj", "{FFF52519-38BB-4155-851D-4209EC67ACA7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_test", "dll_test\dll_test.vcxproj", "{43C0E400-6E1F-42A0-BA2E-57979F32FF74}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FFF52519-38BB-4155-851D-4209EC67ACA7} = {FFF52519-38BB-4155-851D-4209EC67ACA7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,8 +26,19 @@ Global
 		{FFF52519-38BB-4155-851D-4209EC67ACA7}.Release|Win32.Build.0 = Release|Win32
 		{FFF52519-38BB-4155-851D-4209EC67ACA7}.Release|x64.ActiveCfg = Release|x64
 		{FFF52519-38BB-4155-851D-4209EC67ACA7}.Release|x64.Build.0 = Release|x64
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Debug|Win32.ActiveCfg = Debug|Win32
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Debug|Win32.Build.0 = Debug|Win32
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Debug|x64.ActiveCfg = Debug|x64
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Debug|x64.Build.0 = Debug|x64
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Release|Win32.ActiveCfg = Release|Win32
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Release|Win32.Build.0 = Release|Win32
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Release|x64.ActiveCfg = Release|x64
+		{43C0E400-6E1F-42A0-BA2E-57979F32FF74}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBBD41CE-6891-4263-9CD6-4ED64CD8400D}
 	EndGlobalSection
 EndGlobal

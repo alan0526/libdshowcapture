@@ -25,90 +25,80 @@
 
 namespace DShow {
 
-VideoEncoder::VideoEncoder() : context(new HVideoEncoder)
-{
+VideoEncoder::VideoEncoder() : context(new HVideoEncoder) {
 }
 
-VideoEncoder::~VideoEncoder()
-{
-	delete context;
+VideoEncoder::~VideoEncoder() {
+    delete context;
 }
 
-bool VideoEncoder::Valid() const
-{
-	return context->initialized;
+bool VideoEncoder::Valid() const {
+    return context->initialized;
 }
 
-bool VideoEncoder::Active() const
-{
-	return context->active;
+bool VideoEncoder::Active() const {
+    return context->active;
 }
 
-bool VideoEncoder::ResetGraph()
-{
-	delete context;
-	context = new HVideoEncoder;
+bool VideoEncoder::ResetGraph() {
+    delete context;
+    context = new HVideoEncoder;
 
-	return context->initialized;
+    return context->initialized;
 }
 
-bool VideoEncoder::SetConfig(VideoEncoderConfig &config)
-{
-	if (context->active) {
-		delete context;
-		context = new HVideoEncoder;
-	}
+bool VideoEncoder::SetConfig(VideoEncoderConfig& config) {
+    if (context->active) {
+        delete context;
+        context = new HVideoEncoder;
+    }
 
-	return context->SetConfig(config);
+    return context->SetConfig(config);
 }
 
-bool VideoEncoder::GetConfig(VideoEncoderConfig &config) const
-{
-	if (context->encoder == nullptr)
-		return false;
+bool VideoEncoder::GetConfig(VideoEncoderConfig& config) const {
+    if (context->encoder == nullptr)
+        return false;
 
-	config = context->config;
-	return true;
+    config = context->config;
+    return true;
 }
 
-bool VideoEncoder::Encode(unsigned char *data[DSHOW_MAX_PLANES],
-		size_t linesize[DSHOW_MAX_PLANES],
-		long long timestampStart, long long timestampEnd,
-		EncoderPacket &packet, bool &new_packet)
-{
-	if (context->encoder == nullptr)
-		return false;
+bool VideoEncoder::Encode(unsigned char* data[DSHOW_MAX_PLANES],
+                          size_t linesize[DSHOW_MAX_PLANES],
+                          long long timestampStart, long long timestampEnd,
+                          EncoderPacket& packet, bool& new_packet) {
+    if (context->encoder == nullptr)
+        return false;
 
-	return context->Encode(data, linesize, timestampStart, timestampEnd,
-			packet, new_packet);
+    return context->Encode(data, linesize, timestampStart, timestampEnd,
+                           packet, new_packet);
 }
 
-static bool EnumVideoEncoder(vector<DeviceId> &encoders,
-		IBaseFilter *encoder,
-		const wchar_t *deviceName,
-		const wchar_t *devicePath)
-{
-	DeviceId id;
-	bool validDevice =
-		wcsstr(deviceName, L"C985") ||
-		wcsstr(deviceName, L"C353");
+static bool EnumVideoEncoder(vector<DeviceId>& encoders,
+                             IBaseFilter* encoder,
+                             const wchar_t* deviceName,
+                             const wchar_t* devicePath) {
+    DeviceId id;
+    bool validDevice =
+        wcsstr(deviceName, L"C985") ||
+        wcsstr(deviceName, L"C353");
 
-	if (!validDevice)
-		return true;
+    if (!validDevice)
+        return true;
 
-	id.name = deviceName;
-	id.path = devicePath;
-	encoders.push_back(id);
+    id.name = deviceName;
+    id.path = devicePath;
+    encoders.push_back(id);
 
-	(void)encoder;
-	return true;
+    (void)encoder;
+    return true;
 }
 
-bool VideoEncoder::EnumEncoders(vector<DeviceId> &encoders)
-{
-	encoders.clear();
-	return EnumDevices(KSCATEGORY_ENCODER,
-			EnumDeviceCallback(EnumVideoEncoder), &encoders);
+bool VideoEncoder::EnumEncoders(vector<DeviceId>& encoders) {
+    encoders.clear();
+    return EnumDevices(KSCATEGORY_ENCODER,
+                       EnumDeviceCallback(EnumVideoEncoder), &encoders);
 }
 
 };

@@ -147,6 +147,7 @@ namespace DShow {
 	struct DeviceId {
 		std::wstring name;
 		std::wstring path;
+		std::wstring location;
 	};
 
 	struct VideoDevice : DeviceId {

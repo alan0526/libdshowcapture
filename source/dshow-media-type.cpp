@@ -21,76 +21,73 @@
 
 namespace DShow {
 
-HRESULT CopyMediaType(AM_MEDIA_TYPE *pmtTarget, const AM_MEDIA_TYPE *pmtSource)
-{
-	if (!pmtSource || !pmtTarget)
-		return S_FALSE;
+HRESULT CopyMediaType(AM_MEDIA_TYPE* pmtTarget, const AM_MEDIA_TYPE* pmtSource) {
+    if (!pmtSource || !pmtTarget)
+        return S_FALSE;
 
-	*pmtTarget = *pmtSource;
+    *pmtTarget = *pmtSource;
 
-	if (pmtSource->cbFormat && pmtSource->pbFormat) {
-		pmtTarget->pbFormat =
-			(PBYTE)CoTaskMemAlloc(pmtSource->cbFormat);
+    if (pmtSource->cbFormat && pmtSource->pbFormat) {
+        pmtTarget->pbFormat =
+            (PBYTE)CoTaskMemAlloc(pmtSource->cbFormat);
 
-		if (pmtTarget->pbFormat == nullptr) {
-			pmtTarget->cbFormat = 0;
-			return E_OUTOFMEMORY;
-		} else {
-			memcpy(pmtTarget->pbFormat, pmtSource->pbFormat,
-					pmtTarget->cbFormat);
-		}
-	}
+        if (pmtTarget->pbFormat == nullptr) {
+            pmtTarget->cbFormat = 0;
+            return E_OUTOFMEMORY;
+        }
+        memcpy(pmtTarget->pbFormat, pmtSource->pbFormat,
+               pmtTarget->cbFormat);
+    }
 
-	if(pmtTarget->pUnk != nullptr)
-		pmtTarget->pUnk->AddRef();
+    if (pmtTarget->pUnk != nullptr)
+        pmtTarget->pUnk->AddRef();
 
-	return S_OK;
+    return S_OK;
 }
 
-void FreeMediaType(AM_MEDIA_TYPE &mt)
-{
-	if(mt.cbFormat != 0) {
-		CoTaskMemFree((LPVOID)mt.pbFormat);
-		mt.cbFormat = 0;
-		mt.pbFormat = nullptr;
-	}
+void FreeMediaType(AM_MEDIA_TYPE& mt) {
+    if (mt.cbFormat != 0) {
+        CoTaskMemFree((LPVOID)mt.pbFormat);
+        mt.cbFormat = 0;
+        mt.pbFormat = nullptr;
+    }
 
-	if (mt.pUnk) {
-		mt.pUnk->Release();
-		mt.pUnk = nullptr;
-	}
+    if (mt.pUnk) {
+        mt.pUnk->Release();
+        mt.pUnk = nullptr;
+    }
 }
 
-BITMAPINFOHEADER *GetBitmapInfoHeader(AM_MEDIA_TYPE &mt)
-{
-	if (mt.formattype == FORMAT_VideoInfo) {
-		VIDEOINFOHEADER *vih;
-		vih = reinterpret_cast<VIDEOINFOHEADER*>(mt.pbFormat);
-		return &vih->bmiHeader;
+BITMAPINFOHEADER* GetBitmapInfoHeader(AM_MEDIA_TYPE& mt) {
+    if (mt.formattype == FORMAT_VideoInfo) {
+        VIDEOINFOHEADER* vih;
+        vih = reinterpret_cast<VIDEOINFOHEADER*>(mt.pbFormat);
+        return &vih->bmiHeader;
 
-	} else if (mt.formattype == FORMAT_VideoInfo2) {
-		VIDEOINFOHEADER2 *vih;
-		vih = reinterpret_cast<VIDEOINFOHEADER2*>(mt.pbFormat);
-		return &vih->bmiHeader;
-	}
+    }
+    if (mt.formattype == FORMAT_VideoInfo2) {
+        VIDEOINFOHEADER2* vih;
+        vih = reinterpret_cast<VIDEOINFOHEADER2*>(mt.pbFormat);
+        return &vih->bmiHeader;
+    }
 
-	return NULL;
+    return nullptr;
 }
 
-const BITMAPINFOHEADER *GetBitmapInfoHeader(const AM_MEDIA_TYPE &mt)
-{
-	if (mt.formattype == FORMAT_VideoInfo) {
-		const VIDEOINFOHEADER *vih;
-		vih = reinterpret_cast<const VIDEOINFOHEADER*>(mt.pbFormat);
-		return &vih->bmiHeader;
+const BITMAPINFOHEADER* GetBitmapInfoHeader(const AM_MEDIA_TYPE& mt) {
+    if (mt.formattype == FORMAT_VideoInfo) {
+        const VIDEOINFOHEADER* vih;
+        vih = reinterpret_cast<const VIDEOINFOHEADER*>(mt.pbFormat);
+        return &vih->bmiHeader;
 
-	} else if (mt.formattype == FORMAT_VideoInfo2) {
-		const VIDEOINFOHEADER2 *vih;
-		vih = reinterpret_cast<const VIDEOINFOHEADER2*>(mt.pbFormat);
-		return &vih->bmiHeader;
-	}
+    }
+    if (mt.formattype == FORMAT_VideoInfo2) {
+        const VIDEOINFOHEADER2* vih;
+        vih = reinterpret_cast<const VIDEOINFOHEADER2*>(mt.pbFormat);
+        return &vih->bmiHeader;
+    }
 
-	return NULL;
+    return nullptr;
 }
 
 }; /* namespace DShow */
