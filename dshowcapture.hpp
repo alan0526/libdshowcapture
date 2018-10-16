@@ -83,7 +83,8 @@ namespace DShow {
 
 		/* raw formats */
 		ARGB = 100,
-		XRGB,
+		RGB24,
+        RGB32,
 
 		/* planar YUV formats */
 		I420 = 200,
@@ -230,6 +231,7 @@ namespace DShow {
 		bool        ConnectFilters();
 
 		Result      Start();
+		Result      Start(VideoConfig* config);
 		void        Stop();
 
 		bool        GetVideoConfig(VideoConfig &config) const;

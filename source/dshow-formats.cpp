@@ -42,10 +42,10 @@ static bool GetFourCCVFormat(DWORD fourCC, VideoFormat& format) {
     switch (fourCC) {
         /* raw formats */
     case MAKEFOURCC('R', 'G', 'B', '2'):
-        format = VideoFormat::XRGB;
+        format = VideoFormat::RGB24;
         break;
     case MAKEFOURCC('R', 'G', 'B', '4'):
-        format = VideoFormat::XRGB;
+        format = VideoFormat::RGB32;
         break;
     case MAKEFOURCC('A', 'R', 'G', 'B'):
         format = VideoFormat::ARGB;
@@ -108,9 +108,9 @@ bool GetMediaTypeVFormat(const AM_MEDIA_TYPE& mt, VideoFormat& format) {
 
     /* raw formats */
     if (mt.subtype == MEDIASUBTYPE_RGB24)
-        format = VideoFormat::XRGB;
+        format = VideoFormat::RGB24;
     else if (mt.subtype == MEDIASUBTYPE_RGB32)
-        format = VideoFormat::XRGB;
+        format = VideoFormat::RGB32;
     else if (mt.subtype == MEDIASUBTYPE_ARGB32)
         format = VideoFormat::ARGB;
 

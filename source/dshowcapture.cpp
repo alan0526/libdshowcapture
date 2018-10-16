@@ -23,9 +23,7 @@
 #include "device.hpp"
 #include "dshow-device-defs.hpp"
 #include "log.hpp"
-#include <iostream>
 #include <atlconv.h>
-//#include "regedit.hpp"
 
 #include <vector>
 
@@ -98,6 +96,23 @@ void Device::ShutdownGraph() {
 }
 
 bool Device::SetVideoConfig(VideoConfig* config) {
+    if(!config) {
+        return false;
+    }
+
+    if (config->name.empty() && config->path.empty() && !config->location.empty()) {
+        std::vector<VideoDevice> devices;
+        const auto enum_ret = EnumVideoDevices(devices);
+        if(enum_ret) {
+            for (auto & device : devices) {
+                if(device.location == config->location) {
+                    config->path = device.path;
+                    break;
+                }
+            }
+        }
+    }
+
     return context->SetVideoConfig(config);
 }
 
@@ -111,6 +126,18 @@ bool Device::ConnectFilters() {
 
 Result Device::Start() {
     return context->Start();
+}
+
+Result Device::Start(VideoConfig* config) {
+    const auto ret_set_config = SetVideoConfig(config);
+    const auto ret_set_connect_filters = ret_set_config && ConnectFilters();
+
+    if (ret_set_config && ret_set_connect_filters) {
+        return Start();
+    }
+    else {
+        return Result::Error;
+    }
 }
 
 void Device::Stop() {
