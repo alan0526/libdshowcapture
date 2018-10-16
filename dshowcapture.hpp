@@ -231,7 +231,7 @@ namespace DShow {
 		bool        ConnectFilters();
 
 		Result      Start();
-		Result      Start(VideoConfig* config);
+		Result      Start(const VideoConfig& config);
 		void        Stop();
 
 		bool        GetVideoConfig(VideoConfig &config) const;

@@ -128,8 +128,9 @@ Result Device::Start() {
     return context->Start();
 }
 
-Result Device::Start(VideoConfig* config) {
-    const auto ret_set_config = SetVideoConfig(config);
+Result Device::Start(const VideoConfig& config) {
+    VideoConfig vc = config;
+    const auto ret_set_config = SetVideoConfig(&vc);
     const auto ret_set_connect_filters = ret_set_config && ConnectFilters();
 
     if (ret_set_config && ret_set_connect_filters) {
